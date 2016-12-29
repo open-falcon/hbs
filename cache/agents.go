@@ -85,3 +85,28 @@ func deleteStaleAgents() {
 		}
 	}
 }
+
+type SafeAgentsVersion struct {
+	sync.RWMutex
+	M map[string]string
+}
+
+var AgentsVersion = &SafeAgentsVersion{M: make(map[string]string)}
+
+func (this *SafeAgentsVersion) GetVersion(hostname string) (string, bool) {
+	this.RLock()
+	defer this.RUnlock()
+	version, exists := this.M[hostname]
+	return version, exists
+}
+
+func (this *SafeAgentsVersion) Init() {
+	m, err := db.QueryAgentVersion()
+	if err != nil {
+		return
+	}
+
+	this.Lock()
+	defer this.Unlock()
+	this.M = m
+}

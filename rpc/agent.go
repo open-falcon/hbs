@@ -76,3 +76,16 @@ func DigestBuiltinMetrics(items []*model.BuiltinMetric) string {
 
 	return utils.Md5(buf.String())
 }
+
+func (t *Agent) MineAgentVersion(args model.AgentHeartbeatRequest, reply *string) error {
+	if args.Hostname == "" {
+		return nil
+	}
+
+	version, ok := cache.AgentsVersion.GetVersion(args.Hostname)
+	if ok {
+		*reply = version
+	}
+
+	return nil
+}

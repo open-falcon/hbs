@@ -37,3 +37,27 @@ func UpdateAgent(agentInfo *model.AgentUpdateInfo) {
 	}
 
 }
+
+func QueryAgentVersion() (map[string]string, error) {
+	var ret = make(map[string]string)
+
+	sql := "select hostname,version from agent_version where status = 1"
+	rows, err := DB.Query(sql)
+	if err != nil {
+		log.Println("ERROR:", err)
+		return ret, err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		var hostname, version string
+		err = rows.Scan(&hostname, &version)
+		if err != nil {
+			log.Println("ERROR:", err)
+			continue
+		}
+		ret[hostname] = version
+	}
+
+	return ret, nil
+}
