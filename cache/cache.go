@@ -35,6 +35,9 @@ func Init() {
 	log.Println("#9 MonitoredHosts...")
 	MonitoredHosts.Init()
 
+	log.Println("#10 AgentsVersion...")
+	AgentsVersion.Init()
+
 	log.Println("cache done")
 
 	go LoopInit()
@@ -53,5 +56,6 @@ func LoopInit() {
 		HostTemplateIds.Init()
 		ExpressionCache.Init()
 		MonitoredHosts.Init()
+		AgentsVersion.Init()
 	}
 }
