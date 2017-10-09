@@ -100,6 +100,11 @@ func ParentIds(allTpls map[int]*model.Template, tid int) (ret []int) {
 			break
 		}
 
+		if t.Id == t.ParentId {
+			log.Println("[ERROR] template inherit cycle. template id:", t.Id, ",template parent_id:", t.ParentId)
+			return []int{}
+		}
+
 		depth++
 		if depth == 10 {
 			log.Println("[ERROR] template inherit cycle. id:", tid)
