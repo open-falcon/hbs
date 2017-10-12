@@ -93,7 +93,8 @@ func ParentIds(allTpls map[int]*model.Template, tid int) (ret []int) {
 			break
 		}
 
-		if t, exists := allTpls[tid]; exists {
+		t, exists := allTpls[tid]
+		if exists {
 			ret = append(ret, tid)
 			tid = t.ParentId
 		} else {
